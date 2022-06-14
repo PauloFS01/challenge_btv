@@ -34,11 +34,11 @@
           "mappedType": "string"
         }
       },
-      "name": "user",
+      "name": "users",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "user_pkey",
+          "keyName": "users_pkey",
           "columnNames": [
             "id"
           ],
@@ -71,11 +71,11 @@
           "mappedType": "string"
         }
       },
-      "name": "post",
+      "name": "posts",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "post_pkey",
+          "keyName": "posts_pkey",
           "columnNames": [
             "id"
           ],

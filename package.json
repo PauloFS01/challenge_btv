@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node src/index.ts",
     "dev": "nodemon --exec ts-node src/index.ts",
-    "create:migrations": "mikro-orm migration:create"
+    "create:migrations": "mikro-orm migration:create",
+    "down:migrations": "mikro-orm migration:down"
   },
   "keywords": [],
   "author": "",

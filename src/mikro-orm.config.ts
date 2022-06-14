@@ -1,5 +1,5 @@
-import { Post } from "./entities/Post";
-import { User } from "./entities/User";
+import { Posts } from "./entities/Posts";
+import { Users } from "./entities/Users";
 import { MikroORM } from "@mikro-orm/core";
 import path from "path";
 import dotenv from "dotenv";
@@ -11,7 +11,7 @@ export default {
     path: path.join(__dirname, "./migrations"),
     glob: "!(*.d).{js,ts}",
   },
-  entities: [Post, User],
+  entities: [Posts, Users],
   dbName: process.env.DB_NAME,
   type: process.env.DB_TYPE,
   password: process.env.DB_PASSWD,
