@@ -1,6 +1,14 @@
 import { Posts } from "../entities/Posts";
 import { MyContext } from "src/types";
-import { Ctx, Query, Resolver, Arg, Mutation } from "type-graphql";
+import {
+  Ctx,
+  Query,
+  Resolver,
+  Arg,
+  Mutation,
+  UseMiddleware,
+} from "type-graphql";
+import { isAuth } from "../isAuth";
 
 @Resolver()
 export class PostResolver {
@@ -15,6 +23,7 @@ export class PostResolver {
   }
 
   @Mutation(() => Posts, { nullable: true })
+  @UseMiddleware(isAuth)
   async createPost(
     @Arg("quote") quote: string,
     @Ctx() { em }: MyContext
@@ -25,6 +34,7 @@ export class PostResolver {
   }
 
   @Mutation(() => Posts, { nullable: true })
+  @UseMiddleware(isAuth)
   async updatePost(
     @Arg("id") id: number,
     @Arg("quote", () => String, { nullable: true }) quote: string,
@@ -42,6 +52,7 @@ export class PostResolver {
   }
 
   @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
   async deletePost(
     @Arg("id") id: number,
     @Ctx() { em }: MyContext

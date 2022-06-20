@@ -10,6 +10,10 @@ import {
   ObjectType,
 } from "type-graphql";
 import * as argon2 from "argon2";
+import { sign } from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 @InputType()
 class UsernamePasswordInut {
@@ -35,7 +39,10 @@ class UserResponse {
   errors?: FieldError[];
 
   @Field(() => Users, { nullable: true })
-  user?: Users;
+  userId?: number;
+
+  @Field({ nullable: true })
+  token?: string;
 }
 
 @Resolver()
@@ -72,7 +79,7 @@ export class UserResolver {
         password: cryptedPassword,
       });
       await em.persistAndFlush(user);
-      return { user };
+      return { userId: user.id };
     } catch (err) {
       if (err.code === "23505") {
         return {
@@ -101,8 +108,9 @@ export class UserResolver {
     @Ctx() { em }: MyContext
   ): Promise<UserResponse> {
     const user = await em.findOne(Users, { username: options.username });
-    console.log(`this is  find: ${user}`);
+    console.log(`this is  find: ${user?.id}`);
     if (!user) {
+      console.log("I am here!");
       return {
         errors: [
           {
@@ -123,6 +131,12 @@ export class UserResolver {
         ],
       };
     }
-    return { user };
+    console.log(typeof process.env.JWT_SECRET);
+    const secret: string = process.env.JWT_SECRET!;
+
+    const token = sign({ id: user.id }, secret, {
+      expiresIn: "1d",
+    });
+    return { token };
   }
 }
